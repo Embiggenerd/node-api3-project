@@ -7,7 +7,7 @@ const validateUserId = async (req, res, next) => {
         if (idCheck.length === 0) {
             return res.status(400).json({ messsage: "invalid user id" })
         }
-        req.id = req.params.id
+        req.userID = req.params.id
         next()
     } catch (e) {
         next(e)
