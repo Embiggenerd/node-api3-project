@@ -1,3 +1,5 @@
+const { getById} = require('./userDb')
+
 const validateUserId = async (req, res, next) => {
     try {
         const idCheck = await getById(req.params.id)

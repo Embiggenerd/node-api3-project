@@ -13,9 +13,10 @@ server.get('/', logger, (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
 });
 
-server.use(({ message, httpStatusCode }, req, res, next) => {
-  res.status(httpStatusCode || 500).json({
-    message
+server.use((err, req, res, next) => {
+  console.log(err)
+  res.status(err.httpStatusCode || 500).json({
+    message: err.message
   })
   return
 })

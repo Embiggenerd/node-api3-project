@@ -1,4 +1,5 @@
 const validatePost = async (req, res, next) => {
+    console.log('req.body', req.body)
     try {
         if (!req.body) {
             req.status(400).json({ message: "missig post data" })
