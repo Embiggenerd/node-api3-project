@@ -30,9 +30,13 @@ router.get('/:id', validatePostId, async (req, res, next) => {
   }
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
-});
+router.delete('/:id', validatePostId, async (req, res, next) => {
+try {
+  await remove(req.postID)
+  res.json(req.postID)
+} catch (e) {
+  next(e)
+}});
 
 router.put('/:id', (req, res) => {
   // do your magic!
