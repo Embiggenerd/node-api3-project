@@ -66,8 +66,14 @@ router.get('/:id/posts', validateUserId, async (req, res, next) => {
   }
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
+router.delete('/:id', validateUserId, async (req, res, next) => {
+  try {
+    const deleted = await remove(req.userID)
+    console.log(deleted)
+    res.json({ userID:req.userID })
+  } catch (e) {
+    next(e)
+  }
 });
 
 router.put('/:id', (req, res) => {
