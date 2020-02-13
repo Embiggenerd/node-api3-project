@@ -1,47 +1,91 @@
 const express = require('express');
-
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  // do your magic!
+const {
+  get,
+  getById,
+  getUserPosts,
+  insert,
+  update,
+  remove,
+} = require('./userDb')
+
+const postDB = require('../posts/postDb')
+
+const { validateUser, validateUserId } = require('./middleware')
+const { validatePost } = require('../posts/middleware')
+
+router.post('/', validateUser, async (req, res, next) => {
+  try {
+    const users = await insert(req.body)
+    res.json(users)
+  } catch (e) {
+    next(e)
+  }
 });
 
-router.post('/:id/posts', (req, res) => {
-  // do your magic!
+router.post('/:id/posts', validateUserId, validatePost, async (req, res, next) => {
+  try {
+    const posted = await postDB.insert({
+      text: req.body.text,
+      user_id: req.params.id
+    })
+
+    res.json(posted)
+
+  } catch (e) {
+    next(e)
+  }
 });
 
-router.get('/', (req, res) => {
-  // do your magic!
+router.get('/', async (req, res) => {
+  try {
+    const users = await get()
+    res.json(users)
+  } catch (e) {
+    next(e)
+  }
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+router.get('/:id', validateUserId, async (req, res, next) => {
+  console.log('req.userID', req.userID)
+  try {
+    const user = await getById(req.userID)
+    res.json(user)
+  } catch (e) {
+    next(e)
+  }
 });
 
-router.get('/:id/posts', (req, res) => {
-  // do your magic!
+router.get('/:id/posts', validateUserId, async (req, res, next) => {
+  try {
+    const posts = await getUserPosts(req.userID)
+    res.json(posts)
+  } catch (e) {
+    next(e)
+  }
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
+router.delete('/:id', validateUserId, async (req, res, next) => {
+  try {
+    const deleted = await remove(req.userID)
+    console.log(deleted)
+    res.json({ userID: req.userID })
+  } catch (e) {
+    next(e)
+  }
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
+router.put('/:id', validateUser, validateUserId, async (req, res, next) => {
+  try {
+    await update(req.userID, req.body)
+    const newUser = await getById(req.userID)
+    res.json(newUser)
+  } catch (e) {
+    next(e)
+  }
 });
 
-//custom middleware
 
-function validateUserId(req, res, next) {
-  // do your magic!
-}
-
-function validateUser(req, res, next) {
-  // do your magic!
-}
-
-function validatePost(req, res, next) {
-  // do your magic!
-}
 
 module.exports = router;
