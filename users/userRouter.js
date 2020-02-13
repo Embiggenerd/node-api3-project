@@ -12,8 +12,13 @@ const {
 
 const { validateUser, validateUserId} = require('./middleware')
 
-router.post('/', async (req, res) => {
-  
+router.post('/', validateUser, async (req, res, next) => {
+  try {
+    const users = await insert(req.body)
+    res.json(users)
+  }catch(e) {
+    next(e)
+  }
 });
 
 router.post('/:id/posts', (req, res) => {

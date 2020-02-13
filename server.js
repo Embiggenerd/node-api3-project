@@ -5,6 +5,7 @@ const userRouter = require('./users/userRouter')
 
 const server = express();
 
+server.use(express.json())
 server.use('/posts', postRouter)
 server.use('/users', userRouter)
 
@@ -13,7 +14,7 @@ server.get('/', logger, (req, res) => {
 });
 
 server.use(({ message, httpStatusCode }, req, res, next) => {
-  res.stats(httpStatusCode || 500).json({
+  res.status(httpStatusCode || 500).json({
     message
   })
   return

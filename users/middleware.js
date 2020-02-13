@@ -13,6 +13,7 @@ const validateUserId = async (req, res, next) => {
 }
 
 const validateUser = async (req, res, next) => {
+    console.log('req,body', req.body)
     try {
         if (!req.body) {
             res.status(400).json({ message: "missing user data" })
@@ -20,7 +21,7 @@ const validateUser = async (req, res, next) => {
         }
 
         if (!req.body.name) {
-            res.status(400).json({ message: "missing required name firled" })
+            res.status(400).json({ message: "missing required name fieled" })
             return
         }
         next()
