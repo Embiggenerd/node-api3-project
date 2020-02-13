@@ -2,8 +2,22 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  // do your magic!
+const {
+  get,
+  getById,
+  insert,
+  update,
+  remove,
+} = require('./postDb')
+const { validatePost, validatePostId } = require('./middleware')
+
+router.get('/', async (req, res, next) => {
+  try {
+    const posts = await get()
+    res.json(posts)
+  } catch (e) {
+    next(e)
+  }
 });
 
 router.get('/:id', (req, res) => {
@@ -17,11 +31,5 @@ router.delete('/:id', (req, res) => {
 router.put('/:id', (req, res) => {
   // do your magic!
 });
-
-// custom middleware
-
-function validatePostId(req, res, next) {
-  // do your magic!
-}
 
 module.exports = router;

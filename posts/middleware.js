@@ -1,3 +1,5 @@
+
+
 const validatePost = async (req, res, next) => {
     console.log('req.body', req.body)
     try {
@@ -15,6 +17,15 @@ const validatePost = async (req, res, next) => {
     }
 }
 
+const validatePostId = async (req, res, next) => {
+    try {
+        req.postID = req.params.id
+    } catch (e) {
+        next(e)
+    }
+}
+
 module.exports = {
-    validatePost
+    validatePost,
+    validatePostId
 }
