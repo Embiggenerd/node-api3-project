@@ -38,8 +38,14 @@ try {
   next(e)
 }});
 
-router.put('/:id', (req, res) => {
-  // do your magic!
+router.put('/:id', validatePostId, validatePost,  async (req, res,next ) => {
+  try {
+    await update(req.postID, req.body) 
+    const updated = await getById(req.postID)
+    res.json(updated)
+  } catch (e) {
+    next(e)
+  }
 });
 
 module.exports = router;
