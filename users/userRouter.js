@@ -70,14 +70,20 @@ router.delete('/:id', validateUserId, async (req, res, next) => {
   try {
     const deleted = await remove(req.userID)
     console.log(deleted)
-    res.json({ userID:req.userID })
+    res.json({ userID: req.userID })
   } catch (e) {
     next(e)
   }
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
+router.put('/:id', validateUser, validateUserId, async (req, res, next) => {
+  try {
+    await update(req.userID, req.body)
+    const newUser = await getById(req.userID)
+    res.json(newUser)
+  } catch (e) {
+    next(e)
+  }
 });
 
 
