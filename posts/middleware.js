@@ -20,6 +20,7 @@ const validatePost = async (req, res, next) => {
 const validatePostId = async (req, res, next) => {
     try {
         req.postID = req.params.id
+        next()
     } catch (e) {
         next(e)
     }

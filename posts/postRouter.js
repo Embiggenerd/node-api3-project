@@ -20,8 +20,14 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+router.get('/:id', validatePostId, async (req, res, next) => {
+  try {
+    const post = await getById(req.postID)
+    res.json(post)
+
+  } catch (e) {
+    next(e)
+  }
 });
 
 router.delete('/:id', (req, res) => {
